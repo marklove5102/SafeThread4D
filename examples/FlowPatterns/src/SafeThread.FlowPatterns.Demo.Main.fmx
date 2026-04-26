@@ -1,0 +1,241 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  Caption = 'SafeThread - FlowPatterns'
+  ClientHeight = 475
+  ClientWidth = 620
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  DesignerMasterStyle = 0
+  object TabControl: TTabControl
+    Align = Client
+    Margins.Left = 2.000000000000000000
+    Margins.Top = 2.000000000000000000
+    Margins.Right = 2.000000000000000000
+    Margins.Bottom = 2.000000000000000000
+    Size.Width = 616.000000000000000000
+    Size.Height = 471.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 0
+    TabPosition = PlatformDefault
+    Sizes = (
+      616s
+      445s
+      616s
+      445s
+      616s
+      445s)
+    object tabRetry: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 48.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Retry'
+      ExplicitSize.cx = 65.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object btnRetryStart: TButton
+        Position.X = 11.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 113.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Start'
+        OnClick = btnRetryStartClick
+      end
+      object btnRetryCancel: TButton
+        Position.X = 132.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 113.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Cancel'
+        OnClick = btnRetryCancelClick
+      end
+      object pbarRetry: TProgressBar
+        Orientation = Horizontal
+        Position.X = 11.000000000000000000
+        Position.Y = 63.000000000000000000
+        Size.Width = 595.000000000000000000
+        Size.Height = 20.000000000000000000
+        Size.PlatformDefault = False
+      end
+      object MemoRetryLog: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        Position.X = 11.000000000000000000
+        Position.Y = 91.000000000000000000
+        Size.Width = 595.000000000000000000
+        Size.Height = 342.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 7
+        Viewport.Width = 591.000000000000000000
+        Viewport.Height = 338.000000000000000000
+      end
+      object chkRetryForceFailure: TCheckBox
+        Position.X = 253.000000000000000000
+        Position.Y = 11.000000000000000000
+        Size.Width = 97.000000000000000000
+        Size.Height = 19.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Force Failure'
+      end
+      object lblRetryStatus: TLabel
+        Position.X = 11.000000000000000000
+        Position.Y = 38.000000000000000000
+        Size.Width = 595.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Retry Status'
+        TabOrder = 3
+      end
+    end
+    object tabDebounce: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 75.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Debounce'
+      ExplicitSize.cx = 92.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object edtSearch: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 0
+        Position.X = 11.000000000000000000
+        Position.Y = 33.000000000000000000
+        Size.Width = 425.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        OnChangeTracking = edtSearchChangeTracking
+      end
+      object lblDebounceStatus: TLabel
+        Position.X = 11.000000000000000000
+        Position.Y = 63.000000000000000000
+        Size.Width = 425.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Debounce Status'
+        TabOrder = 2
+      end
+      object lblDebounceHint: TLabel
+        Position.X = 11.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 425.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 
+          'Type quickly to see debounce in action '#8212' only searches after 400' +
+          ' ms of silence'
+        TabOrder = 5
+      end
+      object lblDebounceFireCount: TLabel
+        Position.X = 11.000000000000000000
+        Position.Y = 88.000000000000000000
+        Size.Width = 126.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Debounce Fire Count'
+        TabOrder = 4
+      end
+      object lblDebounceDoneCount: TLabel
+        Position.X = 11.000000000000000000
+        Position.Y = 113.000000000000000000
+        Size.Width = 169.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Debounce Done Count'
+        TabOrder = 3
+      end
+      object MemoDebounceLog: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        Position.X = 11.000000000000000000
+        Position.Y = 138.000000000000000000
+        Size.Width = 595.000000000000000000
+        Size.Height = 295.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Viewport.Width = 591.000000000000000000
+        Viewport.Height = 291.000000000000000000
+      end
+    end
+    object tabPipeline: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 62.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Pipeline'
+      ExplicitSize.cx = 80.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object btnPipelineStart: TButton
+        Position.X = 11.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 110.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Start'
+        OnClick = btnPipelineStartClick
+      end
+      object btnPipelineCancel: TButton
+        Position.X = 129.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 110.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Cancel'
+        OnClick = btnPipelineCancelClick
+      end
+      object MemoPipelineLog: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        Position.X = 11.000000000000000000
+        Position.Y = 91.000000000000000000
+        Size.Width = 595.000000000000000000
+        Size.Height = 342.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        Viewport.Width = 591.000000000000000000
+        Viewport.Height = 338.000000000000000000
+      end
+      object lblPipelineStatus: TLabel
+        Position.X = 11.000000000000000000
+        Position.Y = 66.000000000000000000
+        Size.Width = 595.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'Pipeline Status'
+        TabOrder = 2
+      end
+      object pbarPipeline: TProgressBar
+        Orientation = Horizontal
+        Position.X = 11.000000000000000000
+        Position.Y = 38.000000000000000000
+        Size.Width = 595.000000000000000000
+        Size.Height = 20.000000000000000000
+        Size.PlatformDefault = False
+      end
+    end
+  end
+end

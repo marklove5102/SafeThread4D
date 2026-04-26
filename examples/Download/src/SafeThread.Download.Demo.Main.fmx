@@ -1,0 +1,182 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  Caption = 'SafeThread4D - Download'
+  ClientHeight = 660
+  ClientWidth = 490
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  DesignerMasterStyle = 0
+  object TabControl: TTabControl
+    Align = Client
+    Margins.Left = 2.000000000000000000
+    Margins.Top = 2.000000000000000000
+    Margins.Right = 2.000000000000000000
+    Margins.Bottom = 2.000000000000000000
+    Size.Width = 486.000000000000000000
+    Size.Height = 656.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 18
+    TabPosition = PlatformDefault
+    Sizes = (
+      486s
+      630s)
+    object tabDownloads: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 80.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Downloads'
+      ExplicitSize.cx = 80.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object btnDownloadJSON: TButton
+        Position.X = 81.000000000000000000
+        Position.Y = 35.000000000000000000
+        Size.Width = 105.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Download JSON'
+        OnClick = btnDownloadJSONClick
+      end
+      object cbxJSONError: TCheckBox
+        Position.X = 8.000000000000000000
+        Position.Y = 37.000000000000000000
+        Size.Width = 65.000000000000000000
+        Size.Height = 19.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Error'
+      end
+      object btnCancelDownloadJSON: TButton
+        Position.X = 194.000000000000000000
+        Position.Y = 35.000000000000000000
+        Size.Width = 69.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Cancel'
+        OnClick = btnCancelDownloadJSONClick
+      end
+      object btnDownloadImage: TButton
+        Position.X = 271.000000000000000000
+        Position.Y = 35.000000000000000000
+        Size.Width = 117.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        Text = 'Download Image'
+        OnClick = btnDownloadImageClick
+      end
+      object btnCancelDownloadImage: TButton
+        Position.X = 396.000000000000000000
+        Position.Y = 35.000000000000000000
+        Size.Width = 69.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 4
+        Text = 'Cancel'
+        OnClick = btnCancelDownloadImageClick
+      end
+      object MemoJSON: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        Position.X = 8.000000000000000000
+        Position.Y = 65.000000000000000000
+        Size.Width = 255.000000000000000000
+        Size.Height = 177.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 5
+        Viewport.Width = 251.000000000000000000
+        Viewport.Height = 173.000000000000000000
+        object AniIndicatorJSON: TAniIndicator
+          Align = Center
+          Size.Width = 50.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+        end
+      end
+      object rctImage: TRectangle
+        Fill.Color = claWhite
+        Position.X = 271.000000000000000000
+        Position.Y = 65.000000000000000000
+        Size.Width = 207.000000000000000000
+        Size.Height = 177.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object Image: TImage
+          MultiResBitmap = <
+            item
+            end>
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 203.000000000000000000
+          Size.Height = 173.000000000000000000
+          Size.PlatformDefault = False
+          object AniIndicatorImage: TAniIndicator
+            Align = Center
+            Size.Width = 50.000000000000000000
+            Size.Height = 50.000000000000000000
+            Size.PlatformDefault = False
+          end
+        end
+      end
+      object rctLog: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 250.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 370.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoLog: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 366.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 6
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 362.000000000000000000
+        end
+      end
+      object lblDownloadJSONStatus: TLabel
+        Position.X = 81.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 180.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.HorzAlign = Center
+        Text = '[HB] UI'
+        TabOrder = 12
+      end
+      object lblDownloadImageStatus: TLabel
+        Position.X = 269.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 196.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.HorzAlign = Center
+        Text = '[HB] UI'
+        TabOrder = 11
+      end
+    end
+  end
+end

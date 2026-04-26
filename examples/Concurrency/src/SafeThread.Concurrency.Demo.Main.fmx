@@ -1,0 +1,377 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  Caption = 'SafeThread4D - Concurrency'
+  ClientHeight = 660
+  ClientWidth = 490
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  DesignerMasterStyle = 0
+  object TabControl: TTabControl
+    Align = Client
+    Margins.Left = 2.000000000000000000
+    Margins.Top = 2.000000000000000000
+    Margins.Right = 2.000000000000000000
+    Margins.Bottom = 2.000000000000000000
+    Size.Width = 486.000000000000000000
+    Size.Height = 656.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 18
+    TabPosition = PlatformDefault
+    Sizes = (
+      486s
+      630s
+      486s
+      630s)
+    object tabConcurrencyBench: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 126.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Concurrency & Bench'
+      ExplicitSize.cx = 133.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object btnBenchA: TButton
+        Position.X = 254.000000000000000000
+        Position.Y = 65.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 6
+        Text = 'Bench A'
+        OnClick = btnBenchAClick
+      end
+      object btnBenchB: TButton
+        Position.X = 378.000000000000000000
+        Position.Y = 65.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 7
+        Text = 'Bench B'
+        OnClick = btnBenchBClick
+      end
+      object btnCpuLoop: TButton
+        Position.X = 8.000000000000000000
+        Position.Y = 35.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'CPU Loop'
+        OnClick = btnCpuLoopClick
+      end
+      object btnCpuLoopCancel: TButton
+        Position.X = 130.000000000000000000
+        Position.Y = 35.000000000000000000
+        Size.Width = 98.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'CPU Loop Cancel'
+        OnClick = btnCpuLoopCancelClick
+      end
+      object btnParallel: TButton
+        Position.X = 254.000000000000000000
+        Position.Y = 35.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        Text = 'Parallel'
+        OnClick = btnParallelClick
+      end
+      object btnStartWaitDemo: TButton
+        Position.X = 130.000000000000000000
+        Position.Y = 65.000000000000000000
+        Size.Width = 98.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 5
+        Text = 'Start Wait Demo'
+        OnClick = btnStartWaitDemoClick
+      end
+      object btnTimeoutDemo: TButton
+        Position.X = 8.000000000000000000
+        Position.Y = 65.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 4
+        Text = 'Timeout Demo'
+        OnClick = btnTimeoutDemoClick
+      end
+      object pbarCpuLoop: TProgressBar
+        Orientation = Horizontal
+        Position.X = 8.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 20.000000000000000000
+        Size.PlatformDefault = False
+      end
+      object rctBenchB: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 429.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoBenchB: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 12
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 52.000000000000000000
+        end
+      end
+      object rctStartWait: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 298.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoStartWait: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 10
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 52.000000000000000000
+        end
+      end
+      object rctTimeOut: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 232.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoTimeOut: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 9
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 52.000000000000000000
+        end
+      end
+      object rctParallelLog: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 166.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoParallelLog: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 8
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 52.000000000000000000
+        end
+      end
+      object rctCPULoopLog: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 100.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoCPULoopLog: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 7
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 52.000000000000000000
+        end
+      end
+      object rctBenchA: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 364.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 60.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoBenchA: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 56.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 11
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 52.000000000000000000
+        end
+      end
+      object pbarParallel: TProgressBar
+        Orientation = Horizontal
+        Position.X = 254.000000000000000000
+        Position.Y = 8.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 20.000000000000000000
+        Size.PlatformDefault = False
+      end
+      object btnForceAnr: TButton
+        Position.X = 378.000000000000000000
+        Position.Y = 7.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'ANR Force'
+        OnClick = btnForceAnrClick
+      end
+      object edtANR: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 16
+        Position.X = 378.000000000000000000
+        Position.Y = 35.000000000000000000
+      end
+      object rctLog: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 496.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 124.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoLog: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 120.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 12
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 116.000000000000000000
+        end
+      end
+    end
+    object tabPatterns: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 63.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Patterns'
+      ExplicitSize.cx = 63.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object btnWrongUse: TButton
+        StyledSettings = [Family, Size]
+        Position.X = 116.000000000000000000
+        Position.Y = 22.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'WRONG USE'
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        TextSettings.FontColor = claRed
+        OnClick = btnWrongUseClick
+      end
+      object btnRightUse: TButton
+        StyledSettings = [Family, Size, FontColor]
+        Position.X = 8.000000000000000000
+        Position.Y = 22.000000000000000000
+        Size.Width = 100.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'RIGHT USE'
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = btnRightUseClick
+      end
+      object rctWrongRightLog: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 52.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 570.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoWrongRightLog: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 566.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 562.000000000000000000
+        end
+      end
+    end
+  end
+end

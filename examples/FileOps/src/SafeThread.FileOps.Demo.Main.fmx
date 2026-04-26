@@ -1,0 +1,236 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  Caption = 'SafeThread4D - FileOps'
+  ClientHeight = 660
+  ClientWidth = 490
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  DesignerMasterStyle = 0
+  object TabControl: TTabControl
+    Align = Client
+    Margins.Left = 2.000000000000000000
+    Margins.Top = 2.000000000000000000
+    Margins.Right = 2.000000000000000000
+    Margins.Bottom = 2.000000000000000000
+    Size.Width = 486.000000000000000000
+    Size.Height = 656.000000000000000000
+    Size.PlatformDefault = False
+    TabIndex = 0
+    TabOrder = 18
+    TabPosition = PlatformDefault
+    Sizes = (
+      486s
+      630s)
+    object tabCopyFolderFile: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 114.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Copy Folder / File'
+      ExplicitSize.cx = 44.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object btnCancelCopyFile: TButton
+        Position.X = 96.000000000000000000
+        Position.Y = 227.000000000000000000
+        TabOrder = 11
+        Text = 'Cancel'
+        OnClick = btnCancelCopyFileClick
+      end
+      object btnCopyFile: TButton
+        Position.X = 8.000000000000000000
+        Position.Y = 227.000000000000000000
+        TabOrder = 10
+        Text = 'Copy File'
+        OnClick = btnCopyFileClick
+      end
+      object btnCopyFolder: TButton
+        Position.X = 8.000000000000000000
+        Position.Y = 107.000000000000000000
+        TabOrder = 3
+        Text = 'Copy Folder'
+        OnClick = btnCopyFolderClick
+      end
+      object btnCopyFolderCancel: TButton
+        Position.X = 108.000000000000000000
+        Position.Y = 107.000000000000000000
+        TabOrder = 4
+        Text = 'Cancel'
+        OnClick = btnCopyFolderCancelClick
+      end
+      object edtDstFile: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 9
+        Position.X = 8.000000000000000000
+        Position.Y = 197.000000000000000000
+        Size.Width = 382.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TextPrompt = 'Destination'
+      end
+      object edtSrcFile: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 7
+        Position.X = 8.000000000000000000
+        Position.Y = 167.000000000000000000
+        Size.Width = 382.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TextPrompt = 'Source'
+      end
+      object edtDstDir: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 2
+        Position.X = 8.000000000000000000
+        Position.Y = 77.000000000000000000
+        Size.Width = 382.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TextPrompt = 'Destination'
+      end
+      object edtSrcDir: TEdit
+        Touch.InteractiveGestures = [LongTap, DoubleTap]
+        TabOrder = 0
+        Position.X = 8.000000000000000000
+        Position.Y = 47.000000000000000000
+        Size.Width = 382.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TextPrompt = 'Source'
+      end
+      object lblCopyStatus: TLabel
+        Position.X = 8.000000000000000000
+        Position.Y = 22.000000000000000000
+        Size.Width = 239.000000000000000000
+        Size.Height = 17.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.HorzAlign = Center
+        Text = 'Status'
+        TabOrder = 44
+      end
+      object pbarFolderCopy: TProgressBar
+        Orientation = Horizontal
+        Position.X = 255.000000000000000000
+        Position.Y = 19.000000000000000000
+        Size.Width = 135.000000000000000000
+        Size.Height = 20.000000000000000000
+        Size.PlatformDefault = False
+      end
+      object rctCopyFileLog: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 380.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 118.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoCopyFileLog: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 114.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 13
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 110.000000000000000000
+        end
+      end
+      object pbarFileCopy: TProgressBar
+        Orientation = Horizontal
+        Position.X = 255.000000000000000000
+        Position.Y = 139.000000000000000000
+        Size.Width = 135.000000000000000000
+        Size.Height = 20.000000000000000000
+        Size.PlatformDefault = False
+      end
+      object rctCopyFolderLog: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 256.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 118.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoCopyFolderLog: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 114.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 12
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 110.000000000000000000
+        end
+      end
+      object CopyFolderFanOut: TButton
+        Position.X = 209.000000000000000000
+        Position.Y = 107.000000000000000000
+        TabOrder = 5
+        Text = 'Copy FanOut'
+        OnClick = CopyFolderFanOutClick
+      end
+      object btnCancelCopyFolderFanOut: TButton
+        Position.X = 310.000000000000000000
+        Position.Y = 107.000000000000000000
+        TabOrder = 6
+        Text = 'Cancel FanOut'
+        OnClick = btnCancelCopyFolderFanOutClick
+      end
+      object btnSelectFolder: TButton
+        Position.X = 398.000000000000000000
+        Position.Y = 47.000000000000000000
+        TabOrder = 1
+        Text = 'Select Folder'
+        OnClick = btnSelectFolderClick
+      end
+      object btnSelectFile: TButton
+        Position.X = 398.000000000000000000
+        Position.Y = 167.000000000000000000
+        TabOrder = 8
+        Text = 'Select File'
+        OnClick = btnSelectFileClick
+      end
+      object rctParallelLog: TRectangle
+        Position.X = 8.000000000000000000
+        Position.Y = 505.000000000000000000
+        Size.Width = 470.000000000000000000
+        Size.Height = 118.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.500000000000000000
+        object MemoParallelLog: TMemo
+          Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+          DataDetectorTypes = []
+          Align = Client
+          Locked = True
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Size.Width = 466.000000000000000000
+          Size.Height = 114.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 13
+          Viewport.Width = 462.000000000000000000
+          Viewport.Height = 110.000000000000000000
+        end
+      end
+    end
+  end
+end

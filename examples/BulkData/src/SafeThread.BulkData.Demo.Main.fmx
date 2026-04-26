@@ -1,0 +1,220 @@
+object FormMain: TFormMain
+  Left = 0
+  Top = 0
+  Caption = 'SafeThread4D - BulkData'
+  ClientHeight = 620
+  ClientWidth = 475
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnClose = FormClose
+  DesignerMasterStyle = 0
+  object btnCancelInsertRecords: TButton
+    Position.X = 224.000000000000000000
+    Position.Y = 35.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+    Text = 'Cancel'
+    OnClick = btnCancelInsertRecordsClick
+  end
+  object btnCancelRecordsPauseResume: TButton
+    Position.X = 224.000000000000000000
+    Position.Y = 65.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    Text = 'Cancel'
+    OnClick = btnCancelRecordsPauseResumeClick
+  end
+  object btnCancelUpdateRecords: TButton
+    Position.X = 224.000000000000000000
+    Position.Y = 126.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 7
+    Text = 'Cancel'
+    OnClick = btnCancelUpdateRecordsClick
+  end
+  object btnCreateFields: TButton
+    Position.X = 8.000000000000000000
+    Position.Y = 35.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Text = 'Create Fields'
+    OnClick = btnCreateFieldsClick
+  end
+  object btnInsertRecords: TButton
+    Position.X = 116.000000000000000000
+    Position.Y = 35.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'Insert records'
+    OnClick = btnInsertRecordsClick
+  end
+  object btnInsertRecordsPauseResume: TButton
+    Position.X = 116.000000000000000000
+    Position.Y = 65.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    Text = 'Insert records'
+    OnClick = btnInsertRecordsPauseResumeClick
+  end
+  object btnPauseRecordsPauseResume: TButton
+    Position.X = 332.000000000000000000
+    Position.Y = 65.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    Text = 'Pause'
+    OnClick = btnPauseRecordsPauseResumeClick
+  end
+  object btnUpdateRecords: TButton
+    Position.X = 116.000000000000000000
+    Position.Y = 126.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 6
+    Text = 'Update records'
+    OnClick = btnUpdateRecordsClick
+  end
+  object lblInsertRecordsStatus: TLabel
+    Position.X = 8.000000000000000000
+    Position.Y = 14.000000000000000000
+    Size.Width = 424.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
+    Text = '[HB] UI'
+    TabOrder = 23
+  end
+  object lblUpdateRecordsStatus: TLabel
+    Position.X = 316.000000000000000000
+    Position.Y = 105.000000000000000000
+    Size.Width = 133.000000000000000000
+    Size.Height = 17.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
+    Text = '[HB] UI'
+    TabOrder = 22
+  end
+  object pbarInsertRecords: TProgressBar
+    Orientation = Horizontal
+    Position.X = 332.000000000000000000
+    Position.Y = 36.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 20.000000000000000000
+    Size.PlatformDefault = False
+    object lblPercentageInsertRecords: TLabel
+      Align = Client
+      Locked = True
+      Size.Width = 100.000000000000000000
+      Size.Height = 20.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
+      Text = '%'
+      TabOrder = 66
+    end
+  end
+  object pbarUpdateRecords: TProgressBar
+    Orientation = Horizontal
+    Position.X = 332.000000000000000000
+    Position.Y = 127.000000000000000000
+    Size.Width = 100.000000000000000000
+    Size.Height = 20.000000000000000000
+    Size.PlatformDefault = False
+    object lblPercentageUpdateRecords: TLabel
+      Align = Client
+      Locked = True
+      Size.Width = 100.000000000000000000
+      Size.Height = 20.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Center
+      Text = '%'
+      TabOrder = 66
+    end
+  end
+  object GridData: TGrid
+    CanFocus = True
+    ClipChildren = True
+    Position.X = 8.000000000000000000
+    Position.Y = 156.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 220.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 8
+    Viewport.Width = 453.000000000000000000
+    Viewport.Height = 195.000000000000000000
+  end
+  object rctMsg: TRectangle
+    Position.X = 8.000000000000000000
+    Position.Y = 381.000000000000000000
+    Size.Width = 457.000000000000000000
+    Size.Height = 230.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Thickness = 0.500000000000000000
+    object MemoLog: TMemo
+      Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+      DataDetectorTypes = []
+      Align = Client
+      Locked = True
+      Margins.Left = 2.000000000000000000
+      Margins.Top = 2.000000000000000000
+      Margins.Right = 2.000000000000000000
+      Margins.Bottom = 2.000000000000000000
+      Size.Width = 453.000000000000000000
+      Size.Height = 226.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 9
+      Viewport.Width = 449.000000000000000000
+      Viewport.Height = 222.000000000000000000
+    end
+  end
+  object AniIndicatorInsertRecords: TAniIndicator
+    Position.X = 440.000000000000000000
+    Position.Y = 34.000000000000000000
+    Size.Width = 25.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object AniIndicatorUpdateRecords: TAniIndicator
+    Position.X = 440.000000000000000000
+    Position.Y = 125.000000000000000000
+    Size.Width = 25.000000000000000000
+    Size.Height = 25.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object FDMemTable: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired, uvAutoCommitUpdates]
+    UpdateOptions.CheckRequired = False
+    UpdateOptions.AutoCommitUpdates = True
+    Left = 140
+    Top = 544
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'FMX'
+    Left = 287
+    Top = 544
+  end
+  object BindSourceDB1: TBindSourceDB
+    DataSet = FDMemTable
+    ScopeMappings = <>
+    Left = 224
+    Top = 296
+  end
+end
