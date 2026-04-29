@@ -57,7 +57,7 @@ flowchart LR
 - **Params**: `TSafeThread4DParams`, holding configuration, atomic runtime state, the runtime thread handle, and the internal `FCompletedEvent` used for safe waiting.
 - **Facade**: `TSafeThread4D`, the orchestration entrypoint (`StartThread`, `ExecuteThread`, `CancelAndWait`, etc.).
 - **Worker**: background thread that runs `OnExecute`. UI lifecycle callbacks are dispatched through `TThread.Synchronize`, while progress is dispatched through `TThread.Queue`.
-- **Heartbeat**: optional helper thread for UI pulse / ANR awareness, only created when `HeartbeatIntervalMs > 0`.
+- **Heartbeat**: optional helper thread for UI liveness/progress diagnostics, only created when `HeartbeatIntervalMs > 0`.
 - **UI / Main Thread**: where all lifecycle callbacks except `OnExecute` are invoked.
 - **Terminate Proxy** (`TTerminateProxy`): holds a strong reference to `Params` until the termination phase finishes and publishes final completion safely. The strong reference is necessary because the caller may release its own params reference before `TThread.OnTerminate` actually fires; without the proxy holding a separate strong reference, `Params` could be destroyed while termination work is still pending.
 - **Waiting model**: `CancelAndWait` does **not** wait on the raw `TThread` handle. It waits on `Params.FCompletedEvent`, which is published by the termination proxy.
@@ -285,7 +285,7 @@ The possible failure points and what happens in each case:
 The facade raises immediately. No state was touched. A legitimately running task is never disturbed by a concurrent reuse attempt.
 
 **(b) After state reset, before worker creation** — `OnExecute` not assigned, heartbeat thread creation failure, or any exception during callback capture.
-Falls into the outer `except` block, which retracts the thread handle (`FThread := nil`), clears `FExecutionActiveInt` and `FRunningInt`, signals `FCompletedEvent`, and — if the heartbeat watchdog was already created — signals its stop event as a best effort.
+Falls into the outer `except` block, which retracts the thread handle (`FThread := nil`), clears `FExecutionActiveInt` and `FRunningInt`, signals `FCompletedEvent`, and — if the heartbeat helper thread was already created — signals its stop event as a best effort.
 
 **(c) During `LThread.Start`** — typically resource exhaustion (OS can't create more threads, Android limits reached).
 Falls into an **inner** `try/except` wrapped specifically around `LThread.Start`, which performs a more targeted cleanup: dissociates `OnTerminate`, frees the `TTerminateProxy` (since it will never self-destruct through `HandleTerminate`), retracts `FThread`, signals the heartbeat stop event (if created) and releases ownership of the stop event, and finally calls `LThread.Free` (since the thread object will never terminate on its own). Then re-raises, letting the outer `except` perform its idempotent cleanup.
@@ -337,19 +337,19 @@ sequenceDiagram
 
 The heartbeat is not just "another thread pushing UI work." It is subordinated to the logical execution state:
 
-- it stops generating new work when `LStopEvent` is signaled (watchdog loop breaks and frees the event);
+- it stops generating new work when `LStopEvent` is signaled (heartbeat loop breaks and frees the event);
 - queued pings check `CancelRequested` and `FExecutionActiveInt` on the UI thread before firing `OnHeartbeat`;
 - once execution is no longer active, pending pings self-abort.
 
 ### Three shutdown paths for the heartbeat
 
-The heartbeat watchdog can be stopped in three distinct ways, and all three are handled correctly:
+The heartbeat helper thread can be stopped in three distinct ways, and all three are handled correctly:
 
 1. **Normal shutdown (worker finally)** — the worker body completes (success, cancel, timeout, or error) and signals `LStopEvent.SetEvent`. This is the dominant path and is described in the section below.
-2. **Startup failure inside `LThread.Start`** — the inner `except` block signals `LStopEvent.SetEvent` and releases its local reference so the outer handler doesn't try to signal it again. Ownership of the event stays with the watchdog thread, which will free it on exit.
-3. **Startup failure in the outer `except`** — a best-effort `LStopEvent.SetEvent` ensures the watchdog exits cleanly even if the failure happened between watchdog creation and worker start.
+2. **Startup failure inside `LThread.Start`** — the inner `except` block signals `LStopEvent.SetEvent` and releases its local reference so the outer handler doesn't try to signal it again. Ownership of the event stays with the heartbeat helper thread, which will free it on exit.
+3. **Startup failure in the outer `except`** — a best-effort `LStopEvent.SetEvent` ensures the heartbeat helper thread exits cleanly even if the failure happened between heartbeat creation and worker start.
 
-In all three cases, the watchdog thread itself is the one that frees `LStopEvent` in its `finally` block. This ownership model avoids cross-thread free races entirely.
+In all three cases, the heartbeat helper thread itself is the one that frees `LStopEvent` in its `finally` block. This ownership model avoids cross-thread free races entirely.
 
 ### Why the order of shutdown matters
 
@@ -403,7 +403,7 @@ Use the diagrams in this order:
 2. **Main success flow** — see the normal path, including the forced `OnProgress(1.0)` before `OnSuccess`.
 3. **Alternate paths** — see what changes on success, cancel, timeout, or error (including the post-hoc `OnCancel` re-check).
 4. **State model** — understand the `Initializing` → `Running` transition and when a task is active vs safely published complete.
-5. **Heartbeat flow** — understand why the ANR mitigation does not leak into dead tasks and why the shutdown order matters.
+5. **Heartbeat flow** — understand why liveness/progress pings do not leak into dead tasks and why the shutdown order matters.
 6. **Practical interpretation** — consolidate the five roles in your mental model.
 
 That sequence makes the mechanism visible as a machine, not just as a list of methods.

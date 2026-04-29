@@ -519,17 +519,17 @@ If cancellation has been requested, the mechanism raises a specific exception (`
 
 ---
 
-## Part 10 — ANR on Android and the heartbeat idea
+## Part 10 — Android ANR boundaries and the role of `OnHeartbeat`
 
-If you also develop for Android, there is an additional concern: the operating system monitors UI responsiveness.
+If you also develop for Android, there is an additional concern: the operating system monitors whether the application remains responsive.
 
-Android itself has a mechanism called a **watchdog** — literally, a "guard dog". It is an operating system component that observes the application's main thread. If the main thread goes too long without showing enough activity, the watchdog concludes the application has frozen and displays the well-known ANR (*Application Not Responding*) dialog, with the option to close the app.
+The important point is this: ANR is not prevented by enqueueing work to the main thread. If the main thread is blocked, a callback queued with `TThread.Queue` will not run. In this context, avoiding ANR means keeping the main thread free to process input, rendering, lifecycle messages, and system callbacks.
 
-Even when the heavy work is off the main thread, there are still scenarios where the UI may become "too quiet" for the watchdog, especially in long operations with sparse synchronization points.
+That is why the first and most important ANR-prevention discipline in this context is still the same: move long-running work off the main thread, avoid blocking waits on the UI thread, and keep synchronized callbacks short.
 
-A practical strategy for this is the **heartbeat**:
+The heartbeat has a more limited role:
 
-> an auxiliary thread that, at regular intervals, publishes a small "pulse" on the main thread to show that the interface is still alive.
+> an optional auxiliary thread that, at regular intervals, queues a small liveness/progress pulse to the main thread, only useful when the main thread remains free to process queued callbacks.
 
 Conceptual example:
 
@@ -540,7 +540,7 @@ begin
   TThread.Queue(nil,
     procedure
     begin
-      // Small UI pulse
+      // Lightweight UI liveness/progress pulse
     end);
 end;
 
@@ -557,9 +557,7 @@ The real difficulties are:
 - avoiding callbacks into a dead UI;
 - getting the shutdown order right.
 
-This is exactly why SafeThread4D treats heartbeat as part of the mechanism, rather than as an improvised detail in each project.
-
----
+This is exactly why SafeThread4D treats heartbeat as part of the mechanism, rather than as an improvised detail in each project. It is not an ANR-prevention mechanism by itself; it is a controlled liveness/progress helper around already-correct background execution.
 
 ### Note — Strong and weak references in Delphi
 
@@ -682,7 +680,8 @@ begin
     .SetOnHeartbeat(
       procedure
       begin
-        // Small UI pulse — useful in long-running mobile scenarios
+        // Lightweight UI liveness/progress pulse;
+        // keep this callback short
       end
     );
 
@@ -705,7 +704,7 @@ end;
 | `SetOnError`                                 | Centralizes failure handling in a UI-safe context.                                   |
 | `SetOnCancel`                                | Provides a clean path for observed cancellation.                                     |
 | `CheckCancel`                                | Implements cooperative cancellation.                                                 |
-| `SetHeartbeatIntervalMs` + `SetOnHeartbeat`  | Offers optional UI pulses for long-running mobile scenarios.                         |
+| `SetHeartbeatIntervalMs` + `SetOnHeartbeat`  | Offers optional liveness/progress pulses for long-running mobile scenarios.           |
 | Internal `TInterlocked`                      | Ensures safe publication of shared state.                                            |
 | Internal `FCompletedEvent`                   | Enables safe waiting via `CancelAndWait`, independent of the `TThread` lifetime.     |
 | `StartThreadWithWeakRef`                     | Avoids retain cycles when the callback needs to use its own `Params`.                |
@@ -715,7 +714,7 @@ end;
 1. **If your `OnExecute` does not need to consult `Params`**, you can use `StartThread(...)` directly and avoid the weak+strong pattern altogether.
 2. **If the callback needs to call `CheckCancel`, `CheckTimeout`, or `ReportProgress`**, the `StartThreadWithWeakRef` pattern is the safest way to avoid capturing `Params` strongly.
 3. In a real application, the strong reference (`FParams`, in this example) should be released when it is no longer needed — typically in `OnTerminate` or `OnTerminateEvent`.
-4. The heartbeat **mitigates ANR scenarios**, but should not be marketed as a "magic guarantee". It exists to keep the UI breathing during real, long-running scenarios, especially on mobile.
+4. The heartbeat does **not** prevent or mitigate ANR by itself. It is an optional liveness/progress helper for long-running mobile scenarios where the real work is already off the main thread and the main thread remains free to process queued callbacks.
 5. `OnCancel` does not mean that all structural cleanup has already finished. It means that cancellation was observed and the corresponding UI callback has fired. The final termination publication still passes through the remainder of the lifecycle and through the termination proxy.
 6. **`Cancel` only requests cancellation; it does not wait for the worker to finish.** That is intentional — the `btCancelClick` handler runs on the main thread, and the main thread should never block waiting for a worker. If you genuinely need to wait until the worker has finished (for instance, in a custom shutdown sequence run from a background thread), use `TSafeThread4D.CancelAndWait(Params)`. As discussed in Part 8, that wait is built on top of an internal `TEvent`, and the API explicitly rejects being called from the main thread.
 

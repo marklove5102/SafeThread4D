@@ -19,9 +19,9 @@ Every callback runs on a known thread. Every operation can participate in cooper
 
 Delphi ships with several ways to run background work — `TThread`, `TTask`/`ITask`, `TParallel`. Each solves part of the problem. None of them solve all of it at once, and none of them are shaped around the concerns of FMX applications running on mobile devices.
 
-Real applications need more than "run this on another thread". They need a predictable place to initialize UI state, a clean way to report progress without flooding the main-thread queue, a cancellation model that does not corrupt state, a timeout that can be observed from user code, and a way to survive Android's *Application Not Responding* watchdog during long operations.
+Real applications need more than "run this on another thread". They need a predictable place to initialize UI state, a clean way to report progress without flooding the main-thread queue, a cancellation model that does not corrupt state, a timeout that can be observed from user code, and mobile-aware liveness/progress diagnostics for long-running tasks.
 
-**SafeThread4D** is designed around those concerns. The lifecycle is explicit. The cancellation is cooperative. The progress is throttled. The heartbeat keeps the UI "breathing" during long work on mobile. The coordination between UI and worker is the same in every task — no ad-hoc `Synchronize` blocks scattered across the codebase.
+**SafeThread4D** is designed around those concerns. The lifecycle is explicit. The cancellation is cooperative. The progress is throttled. The optional heartbeat provides a lightweight liveness/progress pulse while long-running work remains outside the UI thread. The coordination between UI and worker is the same in every task — no ad-hoc `Synchronize` blocks scattered across the codebase.
 
 The library is intentionally focused: **structured background execution with explicit lifecycle**. It does not try to be a general concurrency framework, a thread pool, or a task composition engine. It provides one solid, predictable runner, and stops there.
 
@@ -43,7 +43,7 @@ As future directions, the project may evolve toward **task composition** (serial
 - [Thread lifecycle](#thread-lifecycle)
 - [Cooperative model](#cooperative-model)
 - [Progress reporting](#progress-reporting)
-- [Android ANR mitigation](#android-anr-mitigation)
+- [Mobile UI liveness diagnostics](#mobile-ui-liveness-diagnostics)
 - [Lifecycle coordination](#lifecycle-coordination)
 - [Weak + Strong startup pattern](#weak--strong-startup-pattern)
 - [Architecture](#architecture)
@@ -140,7 +140,7 @@ Cancellation and timeout only fire when your worker code explicitly checks for t
 Progress updates are rate-limited to protect the main-thread message queue, with a first-pulse bypass so the UI responds immediately to the first update.
 
 **4. Observable over opaque.**
-Thread names appear in the IDE. Elapsed time is measured automatically. Logical thread IDs correlate tasks across logs. A heartbeat thread can keep mobile watchdogs satisfied during long operations.
+Thread names appear in the IDE. Elapsed time is measured automatically. Logical thread IDs correlate tasks across logs. A heartbeat thread can make mobile UI liveness observable during long-running tasks, provided the main thread remains free to process queued callbacks.
 
 ---
 
@@ -178,7 +178,7 @@ This is not enforcement. It is shape. The structure of the API makes the correct
 |---|---|
 | Long-running work in a desktop or mobile FMX application | **SafeThread4D** |
 | Background operation that reports progress to a UI | **SafeThread4D** |
-| Mobile task that must remain responsive under Android watchdog pressure | **SafeThread4D** (heartbeat) |
+| Mobile task that needs periodic progress/liveness diagnostics | **SafeThread4D** (optional heartbeat) |
 | Work that must be cancellable cleanly from the UI | **SafeThread4D** |
 | Operation with a hard time limit | **SafeThread4D** (timeout) |
 | CPU-bound fire-and-forget with no UI interaction | `TTask` or plain `TThread` |
@@ -317,7 +317,7 @@ begin
 end;
 ```
 
-### Task with heartbeat for Android
+### Task with optional mobile heartbeat
 
 ```delphi
 TSafeThread4D.StartThread(
@@ -329,7 +329,8 @@ TSafeThread4D.StartThread(
     .SetHeartbeatIntervalMs(1000)
     .SetOnHeartbeat(procedure
       begin
-        // minimal ping on the UI thread — enough to keep Android responsive
+        // lightweight UI liveness/progress ping;
+        // runs only if the main thread is free to process queued callbacks
       end)
     .SetOnSuccess(procedure(Ctx: TThreadContext)
       begin
@@ -352,7 +353,7 @@ TSafeThread4D.StartThread(
 | Throttled progress with first-pulse bypass | ✓ |
 | Guaranteed 100% progress before `OnSuccess`/`OnComplete` | ✓ |
 | `OnError` ordered deterministically via `Synchronize` | ✓ |
-| Heartbeat thread for Android ANR awareness | ✓ |
+| Optional heartbeat for mobile UI liveness/progress diagnostics | ✓ |
 | Weak + Strong startup pattern helper | ✓ |
 | Thread naming for debugging | ✓ |
 | Logical thread IDs | ✓ |
@@ -448,11 +449,11 @@ In normal worker-thread usage, each task maintains its own progress cadence.
 
 ---
 
-## Android ANR mitigation
+## Mobile UI liveness diagnostics
 
-On Android, if the main thread appears unresponsive for too long, the OS shows the *Application Not Responding* dialog and may kill the application. In long-running mobile scenarios, keeping the UI visibly alive matters.
+In this context, ANR is avoided by keeping the main thread free to process input, rendering, lifecycle messages, and system callbacks. A heartbeat cannot prevent ANR if the main thread is blocked: queued callbacks only run when the main thread is able to process them.
 
-SafeThread4D can run an optional **heartbeat thread** that queues a lightweight callback onto the main thread at a fixed interval while the worker is active:
+SafeThread4D therefore treats heartbeat as a more limited tool: an optional lightweight UI liveness/progress pulse for long-running mobile tasks where the real work is already outside the UI thread.
 
 ```delphi
 TSafeThread4DParams.New
@@ -460,15 +461,15 @@ TSafeThread4DParams.New
   .SetHeartbeatIntervalMs(1000)
   .SetOnHeartbeat(procedure
     begin
-      // no-op is enough in most cases; can also update a status label
+      // optional liveness/progress ping;
+      // keep this callback short
     end);
 ```
 
-The heartbeat automatically stops when the worker finishes. Pings that arrive after termination self-abort safely. The heartbeat does not interfere with progress reporting, cancellation, or timeout.
-
-This is a practical answer to a real problem. The built-in Delphi threading primitives do not address it directly.
+The heartbeat automatically stops when the worker finishes. Pings that arrive after termination self-abort safely. It does not replace correct threading discipline: long-running work must stay off the UI thread, blocking waits on the UI thread must be avoided, and synchronized callbacks must remain short.
 
 ---
+
 
 ## Lifecycle coordination
 
@@ -620,7 +621,7 @@ The `examples/` folder contains self-contained FMX applications that demonstrate
 - **FileOps** — file operations (copy, move, delete) with cooperative cancellation and hard timeout
 - **FlowPatterns** — lifecycle flow demonstration covering success, error, cancel, timeout, and complete paths
 - **ParallelGallery** — runtime-generated gallery showing multiple concurrent tasks coordinating with the UI
-- **RestSync** — REST API synchronization with heartbeat for mobile ANR awareness
+- **RestSync** — REST API synchronization with optional heartbeat for mobile liveness/progress diagnostics
 
 Each demo is intended both as a manual validation tool and as a practical reference for common usage scenarios.
 
@@ -657,8 +658,8 @@ chained through `OnSuccess`.
 <img src="assets/screenshots/rest-sync.png" alt="RestSync demo showing REST API synchronization with heartbeat" width="900">
 
 Multi-page REST API synchronization with cooperative cancel, throttled 
-progress, and an active heartbeat — particularly relevant on Android, where 
-keeping the main thread visibly alive avoids watchdog ANR dialogs.
+progress, and an active heartbeat — useful on mobile as a lightweight 
+liveness/progress diagnostic while the real work remains off the UI thread.
 
 ---
 
@@ -689,9 +690,9 @@ Because preemptive thread termination corrupts state. A thread that is killed in
 
 Because a tight loop calling `TThread.Queue` on every iteration can flood the main-thread queue faster than the UI can drain it. The throttle enforces a healthy upper bound while the first-pulse bypass ensures the UI responds immediately to new work.
 
-### Why a heartbeat thread for Android?
+### Why a heartbeat thread for mobile UI liveness?
 
-Because long operations on mobile need an explicit way to keep the main thread visibly alive. This is a practical concern in real FMX applications, and the standard Delphi concurrency primitives do not address it directly.
+Because long-running mobile tasks often need observable progress or liveness feedback while work is running outside the UI thread. The heartbeat is not an ANR-prevention mechanism by itself; it is a lightweight diagnostic/progress helper that only runs when the main thread remains free to process queued callbacks.
 
 ### Why intentionally disable the raw `TThread` helpers?
 
@@ -719,7 +720,7 @@ This version of **SafeThread4D** is focused on:
 - explicit lifecycle callbacks on well-defined threads;
 - cooperative cancellation and timeout;
 - throttled progress reporting;
-- Android ANR awareness through an optional heartbeat;
+- mobile UI liveness/progress diagnostics through an optional heartbeat;
 - safe coordination and termination.
 
 At this stage, it is **not** intended to:

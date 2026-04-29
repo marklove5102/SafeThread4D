@@ -240,7 +240,7 @@ Use this as a quick reference:
 - You are writing a bounded shutdown drain that must allow workers to complete cleanly.
 
 **Use `Application.ProcessMessages` when:**
-- You are on the main thread and need to let the UI breathe during a long main-thread operation (animations, redraws, input).
+- You are on the main thread and need to allow the UI to process animations, redraws, and input during a long main-thread operation.
 - You are **not** waiting on a worker thread. You are just being polite to the UI.
 
 **Use neither — use proper waiting primitives instead — when:**
